@@ -23,9 +23,9 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f k8s/deployment.yaml'
-                sh 'kubectl apply -f k8s/service.yaml'
-                sh 'kubectl rollout status deployment/weather-app'
+                sh '/tmp/kubectl apply -f k8s/deployment.yaml'
+                sh '/tmp/kubectl apply -f k8s/service.yaml'
+                sh '/tmp/kubectl rollout status deployment/weather-app'
             }
         }
     }
