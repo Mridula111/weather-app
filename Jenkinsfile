@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'pip install pytest --break-system-packages --quiet || pip install pytest --quiet'
+                sh 'python3 -m pip install --user pytest --break-system-packages --quiet || python3 -m pip install --user pytest --quiet'
             }
         }
         stage('Build') {
@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'pytest test_weather.py -v'
+                sh 'python3 -m pytest test_weather.py -v'
             }
         }
         stage('Deploy to Kubernetes') {
@@ -30,8 +30,11 @@ pipeline {
         }
     }
     post {
-        always {
-            archiveArtifacts artifacts: 'weather.py', fingerprint: true, allowEmptyArchive: true
+        success {
+            echo 'Pipeline succeeded: app built, tested, and deployed automatically.'
+        }
+        failure {
+            echo 'Pipeline failed: deployment was skipped.'
         }
     }
 }
